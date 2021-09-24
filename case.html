@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+	<meta charset="UTF-8">
+	<title>Archived quote</title>
+	<!--CSS for the theme-->
+	<style type="text/css">
+		body {
+	font-family:Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+}
+
+tr, td, th, thead, tfoot, span, p {
+	page-break-inside: avoid !important;
+}
+
+/* The title of the page */
+.page_title {
+	text-decoration:underline;
+	margin-top:0;
+}
+/* The logo contained */
+.logo img {
+	max-width:350px;
+	max-height:150px;
+	width:auto;
+	height:auto;
+}
+/* The logo img element */
+.img_logo {
+	max-width:350px;
+	max-height:150px;
+	width:auto;
+	height:auto;
+}
+/* The details about the invoice */
+.invoice_details {
+	font-size:0.9em;
+}
+/* The details about the purchase order */
+.po_details {
+	font-size:0.9em;
+}
+/* The rounded box for client and delivery details */
+.details_box {
+	padding-left:6px;
+	border:1px solid #AAA;
+	border-radius:6px;
+	background-color:#EEE;
+	font-size:0.9em;
+}
+/* A label for a field */
+.label {
+	font-weight:bold;
+	white-space: nowrap;
+}
+/* The grid we are using to show items */
+.item_grid {
+	border-radius:6px;
+	margin-left: auto;
+    margin-right: auto;
+	counter-reset: row;
+	empty-cells: show;
+}
+/* The blank line between items and totals in the grid */
+.item_grid_break {
+	border-bottom:1px solid #777;
+}
+/* Set the left border on certain item cells */
+.item_grid td, .item_grid th {
+	padding:0 2px;
+	border-top:0 solid #777;
+	border-right:1px solid #777;
+	border-bottom:0 solid #777;
+	border-left:1px solid #777;
+}
+/* The header row in the item grid */
+.item_grid th {
+	background:#ddd;
+	border-top:1px solid #777;
+}
+/* Set the stripes in the item grid */
+.item_grid tr.item_row:nth-child(odd) {
+	background-color:rgba(0,0,0, 0.05);
+}
+/* Make sure last item has a bottom border*/
+.item_grid tr:last-child td {
+	border-bottom:1px solid #777;
+}
+/* The row counter */
+.counter:before {
+	counter-increment: row;
+    content: counter(row);
+}
+.counter {
+	font-weight:normal;
+	color:#999;
+}
+
+/* THE FOLLOWING ARE GENERATED CLASSES */
+
+/* How a heading name will be displayed */
+.heading_name {
+	font-weight:bold;
+	margin-top:4px;
+	font-size:1.1em;
+	white-space: nowrap;
+}
+/* How a heading technical description will be displayed */
+.heading_technical {
+	font-style:italic;
+	color:grey;
+}
+/* How a heading total price will be displayed */
+.heading_price {
+	display:none;
+	white-space:nowrap;
+}
+.consumable_price,.stock_price, .custom_price, .labour_price {
+	white-space:nowrap;
+}
+/* How an inline heading will be displayed */
+.inline_name {
+	font-weight:bold;
+	font-style:italic;
+	white-space: nowrap;
+}
+/* How items quantity will be displayed */
+.consumable_qty, .stock_qty, .custom_qty, .labour_qty {
+	display:inline-block;
+	width:70px;
+}
+/* How items name will be displayed */
+.consumable_name, .stock_name, .custom_name, .labour_name {
+	display: inline-block;
+	white-space: nowrap;
+}
+.heading_name {
+	display: block;
+	white-space: nowrap;
+}
+/* How autopull items will be displayed */
+.autopull.consumable_name, .autopull.stock_name, .autopull.custom_name, .autopull.labour_name {
+	font-style:italic;
+	color:grey;
+}
+/* How additional item text will be diaplyed */
+.consumable_additional, .stock_additional, .custom_additional, .labour_additional {
+	display: inline-block;
+	font-style:italic;
+	color:#777;
+	white-space: nowrap;
+}
+.stock_unit_price, .stock_price, .custom_unit_price, .custom_price, .consumable_unit_price, .consumable_price, .labour_unit_price, .labour_price {
+	white-space: nowrap !important;
+}
+/* The page footer */
+#footer {
+	bottom:0;
+	left:0;
+	right:0;
+	position:fixed;
+	text-align:center;
+	background:#fff;
+}
+/* What to show when showing on screen */
+@media screen {
+	body {
+		min-width:900px;
+	}
+	#footer {
+		position:fixed;
+	}
+	.pagebreak hr {
+		border-top: 5px double #8c8b8b;
+	}
+}
+@media print {
+    body {
+        width:950px; /* Sets the page to a nice width (same as used in MyHireHop webpage) */
+		-webkit-print-color-adjust:exact;
+    }
+	@page {
+		/* margin-top:0px; /* This automatically removes the browser header in Chrome, however it causes clipping */
+		/* margin-bottom:0px; /* This automatically removes the browser footer in Chrome, however it causes clipping */
+	}
+	#footer {
+		position:absolute;
+	}
+	.pagebreak {
+		display: none !important;
+		border-top: 5px double #8c8b8b;
+	}
+}
+.text_right { text-align: right; }
+.text_left { text-align: left; }
+	</style>
+	<script>
+		// Change the document name and add the invoice number once the document has finished loading
+		window.onload = function(){
+			document.title = document.getElementById("doc_type").textContent + " (" + document.getElementById("number").textContent + ")";
+		}
+	</script>
+</head>
+<body>
+	<!--Make the whole page a table so the <thead> acts as the header-->
+	<table style="width:100%">
+<!--This is our page header section--><thead><tr>
+<td>
+					<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="text_left" style="width:1%;"><span name="user:logo" class="logo"><img src="https://myhirehop.co.uk/logos/117.png?v=5"></span></td>
+							<td class="text_left" style="padding:0 1em; width:10%; white-space:nowrap;">
+<div name="user:company" style="font-weight:bold">HireHop Ltd</div>
+<div name="depot:address"><span>Unit 50,<br>
+Enterprise Centre,<br>
+Cranborne Road,<br>
+Potters Bar<br>
+Hertfordshire,<br>
+EN6 3DQ</span>
+</div>
+</td>
+							<td valign="top" class="text_right">
+<h1 class="page_title text_right" style="text-transform:capitalize" id="doc_type">Archived quote</h1>
+								<table class="invoice_details" cellspacing="0" style="display:inline">
+<tr>
+<td class="label">Job Number : </td>
+<td class="text_left"><span id="number" name="job:reference">163</span></td>
+</tr>
+<tr>
+<td class="label">Date : </td>
+<td class="text_left"><span name="general:date">20 June 2020</span></td>
+</tr>
+</table>
+</td>
+						</tr>
+<tr><td colspan="3"> </td></tr>
+</table>
+</td>
+			</tr></thead>
+<!--The <tbody> is the rest of the page--><tbody><tr>
+<td>
+					<!--3 cell single row table to hold client details and delivery details (middle cell is a spacer)-->
+					<table width="100%" cellpadding="0" cellspacing="0"><tr>
+<td width="50%" class="details_box client_info">
+							<table width="100%">
+<tr>
+<td style="min-width:95px;width:95px" class="label">Name </td>
+									<td><span name="job:name">Sean Murphy</span></td>
+								</tr>
+<tr>
+<td class="label">Company </td>
+									<td><span name="job:company">Subfrantic Production Services Limited</span></td>
+								</tr>
+<tr>
+<td valign="top" class="label">Address </td>
+									<td><div name="job:invoice_address" style="overflow:auto"><span>Unit 5<br>
+Holmshaw Farm<br>
+Layhams Road<br>
+Bromley<br>
+BR2 6AR</span>
+</div></td>
+								</tr>
+</table>
+</td>
+						<td>  </td>
+						<td width="50%" class="details_box delivery_info">
+							<table width="100%">
+<tr>
+<td style="min-width:165px;width:165px" class="label">Deliver to </td>
+									<td><span name="job:venue">Subfrantic Production Services Limited</span></td>
+								</tr>
+<tr>
+<td valign="top" class="label">Delivery Address </td>
+									<td><div name="job:venue_address" style="overflow:auto"><span>Unit 5<br>
+Holmshaw Farm<br>
+Layhams Road<br>
+Bromley<br>
+BR2 6AR</span>
+</div></td>
+								</tr>
+<tr>
+<td class="label">Telephone </td>
+									<td><span name="job:venue_telephone">+44 1959 576724</span></td>
+								</tr>
+</table>
+</td>
+					</tr></table>
+<!--Job dates--><p style="font-size:1.15em;">
+						<span class="label">Job Start </span><span name="job:job_start">Thursday, 12 January 2017</span> - <span name="job:job_start_time">12:00</span>
+						   
+						<span class="label">Job Finish </span><span name="job:job_end"></span> - <span name="job:job_end_time"></span>
+					</p>
+					<!--Items invoiced grid-->
+					<table class="item_grid" cellspacing="0" cellpadding="0" width="100%">
+<!--Do a <thead> so if page wraps, this will go on the next page--><thead><tr style="background:#ddd;height:20px">
+<th width="30"> </th>
+								<th width="50">Qty</th>
+								<th>Description</th>
+								<th width="90">Unit Price</th>
+								<th width="70">Discount</th>
+								<th width="110">Price</th>
+							</tr></thead>
+<!--The <tbody> of all the rest that will wrap pages if needed--><tbody>
+<tr class="cat_custom custom no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_custom custom_qty no_image item_cell">1</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_custom custom_name no_image">PSU for Datalogic Scanner</span> <span name="additional" style="white-space:normal;" class="no_image cat_custom custom_additional no_image">The rain in Spain stays mainly on the plain. The rain in Spain stays mainly on the plain. The rain in Spain stays mainly</span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_custom custom_unit_price no_image item_cell">£14.23</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_custom custom_discount no_image item_cell">9.98%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_custom custom_price no_image item_cell">£12.81</span></td>
+							</tr>
+<tr class="cat_custom custom no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_custom custom_qty no_image item_cell">1</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_custom custom_name no_image">USB Cable for Datalogic Scanner</span> <span name="additional" style="white-space:normal;" class="no_image cat_custom custom_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_custom custom_unit_price no_image item_cell">£18.32</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_custom custom_discount no_image item_cell">9.99%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_custom custom_price no_image item_cell">£16.49</span></td>
+							</tr>
+<tr class="cat_Tape consumable no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Tape consumable_qty no_image item_cell">1</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_Tape consumable_name no_image">Clear Laminating Tape - 33m</span> <span name="additional" style="white-space:normal;" class="no_image cat_Tape consumable_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Tape consumable_unit_price no_image item_cell">£17.50</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Tape consumable_discount no_image item_cell">0%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Tape consumable_price no_image item_cell">£17.50</span></td>
+							</tr>
+<tr class="cat_custom custom no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_custom custom_qty no_image item_cell">1</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_custom custom_name no_image">Carriage</span> <span name="additional" style="white-space:normal;" class="no_image cat_custom custom_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_custom custom_unit_price no_image item_cell">£20.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_custom custom_discount no_image item_cell">10%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_custom custom_price no_image item_cell">£18.00</span></td>
+							</tr>
+<tr class="heading no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image heading_qty no_image item_cell"></span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image heading_name no_image">Scanner</span> <span name="additional" style="white-space:normal;" class="no_image heading_additional no_image">The Datalogic scanner is a 2D industrial unit, ruggedised so it can be dropped on a concrete floor. &nbsp;It has a long transmit range from the terminal and has a find me option on the charging base (included).</span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image heading_unit_price no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image heading_discount no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image heading_price no_image item_cell">£589.00</span></td>
+							</tr>
+<tr class="cat_Scanning consumable inv_items item_row" style="height:20px">
+<td valign="top"><span class="counter"></span></td>
+								<td style="text-align:center;"><span name="qty" class="cat_Scanning consumable_qty item_cell">1</span></td>
+								<td class="indent" style="padding-left:25px;">
+<span name="name" class="cat_Scanning consumable_name">Datalogic Powerscan 9500 wireless scanner kit</span> <span name="additional" style="white-space:normal;" class="cat_Scanning consumable_additional">inc base, holster, PSU, USB cable etc</span>
+</td>
+								<td style="text-align:right;"><span name="unit_price" class="cat_Scanning consumable_unit_price item_cell">£589.00</span></td>
+								<td style="text-align:right;"><span name="discount" class="cat_Scanning consumable_discount item_cell">0%</span></td>
+								<td style="text-align:right;"><span name="price" class="cat_Scanning consumable_price item_cell">£589.00</span></td>
+							</tr>
+<tr class="heading no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image heading_qty no_image item_cell"></span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image heading_name no_image">Printer</span> <span name="additional" style="white-space:normal;" class="no_image heading_additional no_image"><span class="no_image ">This is a complete kit of parts for a printer with 2580 labels in the 1" x 2" format, with laminating tape and design software.<br></span></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image heading_unit_price no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image heading_discount no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image heading_price no_image item_cell">£371.40</span></td>
+							</tr>
+<tr class="cat_Printing consumable inv_items item_row" style="height:20px">
+<td valign="top"><span class="counter"></span></td>
+								<td style="text-align:center;"><span name="qty" class="cat_Printing consumable_qty item_cell">1</span></td>
+								<td class="indent" style="padding-left:25px;">
+<span name="name" class="cat_Printing consumable_name">Zebra GK Thermal Transfer Printer kit</span> <span name="additional" style="white-space:normal;" class="cat_Printing consumable_additional">inc PSU, USB cable etc</span>
+</td>
+								<td style="text-align:right;"><span name="unit_price" class="cat_Printing consumable_unit_price item_cell">£299.00</span></td>
+								<td style="text-align:right;"><span name="discount" class="cat_Printing consumable_discount item_cell">0%</span></td>
+								<td style="text-align:right;"><span name="price" class="cat_Printing consumable_price item_cell">£299.00</span></td>
+							</tr>
+<tr class="cat_Printing consumable inv_items item_row" style="height:20px">
+<td valign="top"><span class="counter"></span></td>
+								<td style="text-align:center;"><span name="qty" class="cat_Printing consumable_qty item_cell">1</span></td>
+								<td class="indent" style="padding-left:25px;">
+<span name="name" class="cat_Printing consumable_name">Zebra Ink Ribbon 74m - BLACK</span> <span name="additional" style="white-space:normal;" class="cat_Printing consumable_additional"></span>
+</td>
+								<td style="text-align:right;"><span name="unit_price" class="cat_Printing consumable_unit_price item_cell">£8.70</span></td>
+								<td style="text-align:right;"><span name="discount" class="cat_Printing consumable_discount item_cell">0%</span></td>
+								<td style="text-align:right;"><span name="price" class="cat_Printing consumable_price item_cell">£8.70</span></td>
+							</tr>
+<tr class="cat_Printing consumable inv_items item_row" style="height:20px">
+<td valign="top"><span class="counter"></span></td>
+								<td style="text-align:center;"><span name="qty" class="cat_Printing consumable_qty item_cell">1</span></td>
+								<td class="indent" style="padding-left:25px;">
+<span name="name" class="cat_Printing consumable_name">Zebra Labels 2"x1" (50.8 x 25.4mm) permanent adhesive x 2580</span> <span name="additional" style="white-space:normal;" class="cat_Printing consumable_additional"></span>
+</td>
+								<td style="text-align:right;"><span name="unit_price" class="cat_Printing consumable_unit_price item_cell">£28.70</span></td>
+								<td style="text-align:right;"><span name="discount" class="cat_Printing consumable_discount item_cell">0%</span></td>
+								<td style="text-align:right;"><span name="price" class="cat_Printing consumable_price item_cell">£28.70</span></td>
+							</tr>
+<tr class="cat_Tape consumable no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Tape consumable_qty no_image item_cell">2</span></td>
+								<td class="no_image indent" style="padding-left:25px;">
+<span name="name" class="no_image cat_Tape consumable_name no_image">Clear Laminating Tape - 33m</span> <span name="additional" style="white-space:normal;" class="no_image cat_Tape consumable_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Tape consumable_unit_price no_image item_cell">£17.50</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Tape consumable_discount no_image item_cell">0%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Tape consumable_price no_image item_cell">£35.00</span></td>
+							</tr>
+<tr class="heading no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image heading_qty no_image item_cell"></span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image heading_name no_image">Training &amp; Integration</span> <span name="additional" style="white-space:normal;" class="no_image heading_additional no_image">A full day of training is approx 8 hours with breaks. &nbsp;A training programme is tailored to your needs and discussed before the day to ensure your goals are achieved during the day.</span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image heading_unit_price no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image heading_discount no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image heading_price no_image item_cell">£1,350.00</span></td>
+							</tr>
+<tr class="cat_Support labour no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Support labour_qty no_image item_cell">1</span></td>
+								<td class="no_image indent" style="padding-left:25px;">
+<span name="name" class="no_image cat_Support labour_name no_image">Implementation / Integration (Day)</span> <span name="additional" style="white-space:normal;" class="no_image cat_Support labour_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Support labour_unit_price no_image item_cell">£675.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Support labour_discount no_image item_cell">0%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Support labour_price no_image item_cell">£675.00</span></td>
+							</tr>
+<tr class="cat_Training labour no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Training labour_qty no_image item_cell">1</span></td>
+								<td class="no_image indent" style="padding-left:25px;">
+<span name="name" class="no_image cat_Training labour_name no_image">Training (Day)</span> <span name="additional" style="white-space:normal;" class="no_image cat_Training labour_additional no_image">plus costs</span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Training labour_unit_price no_image item_cell">£675.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Training labour_discount no_image item_cell">0%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Training labour_price no_image item_cell">£675.00</span></td>
+							</tr>
+<tr class="heading no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image heading_qty no_image item_cell"></span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image heading_name no_image">Subscription</span> <span name="additional" style="white-space:normal;" class="no_image heading_additional no_image">Yearly subscriptions are discounted by one month so you get twelve months for the price of eleven.</span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image heading_unit_price no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image heading_discount no_image item_cell"></span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image heading_price no_image item_cell">£495.00</span></td>
+							</tr>
+<tr class="cat_Subscription consumable no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Subscription consumable_qty no_image item_cell">1</span></td>
+								<td class="no_image indent" style="padding-left:25px;">
+<span name="name" class="no_image cat_Subscription consumable_name no_image">12 Month Subscription - First User</span> <span name="additional" style="white-space:normal;" class="no_image cat_Subscription consumable_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Subscription consumable_unit_price no_image item_cell">£360.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Subscription consumable_discount no_image item_cell">8.33%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Subscription consumable_price no_image item_cell">£330.00</span></td>
+							</tr>
+<tr class="cat_Subscription consumable no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Subscription consumable_qty no_image item_cell">1</span></td>
+								<td class="no_image indent" style="padding-left:25px;">
+<span name="name" class="no_image cat_Subscription consumable_name no_image">12 Month Subscription - Additional User</span> <span name="additional" style="white-space:normal;" class="no_image cat_Subscription consumable_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Subscription consumable_unit_price no_image item_cell">£180.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Subscription consumable_discount no_image item_cell">8.33%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Subscription consumable_price no_image item_cell">£165.00</span></td>
+							</tr>
+<tr class="cat_custom custom no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_custom custom_qty no_image item_cell">1</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_custom custom_name no_image">Next Day Delivery</span> <span name="additional" style="white-space:normal;" class="no_image cat_custom custom_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_custom custom_unit_price no_image item_cell">£20.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_custom custom_discount no_image item_cell">10%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_custom custom_price no_image item_cell">£18.00</span></td>
+							</tr>
+<tr class="cat_Support labour no_image inv_items item_row" style="height:20px">
+<td valign="top" class="no_image "><span class="counter"></span></td>
+								<td style="text-align:center;" class="no_image "><span name="qty" class="no_image cat_Support labour_qty no_image item_cell">0.5</span></td>
+								<td class="no_image indent">
+<span name="name" class="no_image cat_Support labour_name no_image">Implementation / Integration (Day)</span> <span name="additional" style="white-space:normal;" class="no_image cat_Support labour_additional no_image"></span>
+</td>
+								<td style="text-align:right;" class="no_image "><span name="unit_price" class="no_image cat_Support labour_unit_price no_image item_cell">£675.00</span></td>
+								<td style="text-align:right;" class="no_image "><span name="discount" class="no_image cat_Support labour_discount no_image item_cell">0%</span></td>
+								<td style="text-align:right;" class="no_image "><span name="price" class="no_image cat_Support labour_price no_image item_cell">£337.50</span></td>
+							</tr>
+<tr>
+<!--This fills the empty space--><td class="item_cell" style="border-bottom-width:1px;"></td>
+								<td class="item_cell" style="border-bottom-width:1px;"></td>
+								<td class="item_cell" style="border-bottom-width:1px;"></td>
+								<td class="item_cell" style="border-bottom-width:1px;"></td>
+								<td class="item_cell" style="border-bottom-width:1px;"></td>
+								<td class="item_cell" style="border-bottom-width:1px;"></td>
+							</tr>
+<tr style="height:20px">
+<td colspan="5" class="label text_right">Net total </td>
+								<td style="text-align:right;"><span name="totals:net">£3,225.70</span></td>
+							</tr>
+<tr style="height:20px">
+<td colspan="5" class="label text_right">Tax </td>
+								<td style="text-align:right;"><span name="totals:vat">£645.14</span></td>
+							</tr>
+<tr style="height:20px">
+<td colspan="5" class="label text_right">Total </td>
+								<td style="text-align:right;"><span name="totals:total">£3,870.84</span></td>
+							</tr>
+</tbody>
+</table>
+<!--End of the items table-->
+</td>
+			</tr></tbody>
+</table>
+<!--End of the page table-->
+</body></html>
